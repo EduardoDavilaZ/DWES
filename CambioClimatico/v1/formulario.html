@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Huella de carbono en bases de datos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Huella de carbono en bases de datos</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="inicio.html">Inicio</a></li>
+            <li><a href="formulario.html">Factores de emisión</a></li>
+        </ul>
+    </nav>
+
+    <form action="prueba.php" method="GET">
+        <fieldset>
+            <legend>Datos de la piscina</legend>
+
+            <label for="nombre">Nombre de responsable: </label>
+            <input type="text" name="nombre" id="nombre">
+
+            <label for="fecha">Fecha de revisión: </label>
+            <input type="date" name="fecha" id="fecha">
+
+            <label for="hotel">Lugar: </label>
+            <select name="hotel" id="hotel">
+                <option value="1">THB Can Picafort Gran Playa</option>
+                <option value="2">THB Can Picafort Gran Bahía</option>
+                <option value="3">THB Cala Ratjada Guya Playa</option>
+                <option value="4">THB Cala Ratjada Cala Lliteras</option>
+                <option value="5">THB Cala Ratjada Dos Playas</option>
+            </select>
+        </fieldset>
+        
+        <fieldset>
+            <legend>Datos energéticos: </legend>
+            <label for="">Fuentes de energía: </label>
+            <input type="radio" name="fuentes" id="fuentes">Mix sin GdO
+            <input type="radio" name="fuentes" id="fuentes">GdO de cogeneración
+            <table>
+                <tr>
+                    <th>Componente de consumo</th>
+                    <th>Potencia (kW)</th>
+                    <th>Horas de uso (h/día)</th>
+                </tr>
+                <tr>
+                    <td>Bomba de calor</td>
+                    <td><input type="number" name="datos[0][potencia]"></td>
+                    <td><input type="number" name="datos[0][horas]"></td>
+                </tr>
+                <tr>
+                    <td>Bomba de filtración</td>
+                    <td><input type="number" name="datos[1][potencia]"></td>
+                    <td><input type="number" name="datos[1][horas]"></td>
+                </tr>
+                <tr>
+                    <td>Iluminación</td>
+                    <td><input type="number" name="datos[2][potencia]"></td>
+                    <td><input type="number" name="datos[2][horas]"></td>
+                </tr>
+                <tr>
+                    <td>Bomba de circulación de agua</td>
+                    <td><input type="number" name="datos[3][potencia]"></td>
+                    <td><input type="number" name="datos[3][horas]"></td>
+                </tr>
+            </table>
+        </fieldset>
+
+        <fieldset>
+            <legend>Evaluación de la piscina</legend>
+
+            <input type="checkbox" name="evaluacion[]" value="1">
+            <label for="filtracion">La maquinaria de filtración y bombeo funciona con normalidad.</label><br>
+
+            <input type="checkbox" name="evaluacion[]" value="2">
+            <label for="limpieza">Se realizan limpiezas de skimmers y filtros de forma periódica.</label><br>
+
+            <input type="checkbox" name="evaluacion[]" value="3">
+            <label for="nivel_agua">El nivel del agua es el adecuado.</label><br>
+
+            <input type="checkbox" name="evaluacion[]" value="4">
+            <label for="sistemas">Los sistemas de iluminación y climatización funcionan correctamente.</label><br>
+
+            <input type="checkbox" name="evaluacion[]" value="5">
+            <label for="grietas">La piscina no presenta grietas ni fugas.</label><br>
+
+            
+
+            <label for="observaciones">Observaciones</label><br>
+            <textarea name="observaciones" id="observaciones"></textarea>
+        </fieldset>
+
+        <input type="radio" name="terminos" id="terminos">
+        <label for="terminos">Aceptar los términos y condiciones</label>
+        
+        <input type="submit" value="Enviar">
+
+    </form>
+
+
+</body>
+</html>
