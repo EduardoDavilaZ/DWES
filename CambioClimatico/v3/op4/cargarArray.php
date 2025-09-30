@@ -9,7 +9,6 @@
         ];
         return $hoteles;
     }
-    
 
     function cargarArrayEvaluacion (){
 
