@@ -1,7 +1,7 @@
 <?php
     class Operaciones {
-        private $num1;
-        private $num2;
+        private int $num1;
+        private int $num2;
 
         function __construct(){}
 
