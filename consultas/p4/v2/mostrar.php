@@ -13,11 +13,13 @@
 
     if ($resultado->num_rows != 0){
 
-        while ($fila = $resultado->fetch_array()) {
+        while ($fila = $resultado->fetch_array()) { // Usar fetch_assoc()
+            
             foreach ($fila as $elemento) {
                 echo $elemento . ' ';
+                echo '</br>';
             }
-            echo '</br>';
+            
         }
 
     } else {

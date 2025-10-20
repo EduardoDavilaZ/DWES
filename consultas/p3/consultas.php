@@ -22,21 +22,19 @@
     }
 
     function añadirVariasFilas($conexion) {
-        // Concatenar consultas a $sql
-        $sql = "INSERT INTO hoteles (nombre) VALUES ('THB San Antonio Ocean Beach');";
-        $sql .= "INSERT INTO hoteles (nombre) VALUES ('THB Costa Teguise Lanzarote Beach');";
-        $sql .= "INSERT INTO hoteles (nombre) VALUES ('THB Playa de Palma El Cid');";
 
-        // Visualizar la consulta
-        echo $sql;
+        // Crear array con hoteles
+        $hoteles = [
+            'THB San Antonio Ocean Beach',
+            'THB Costa Teguise Lanzarote Beach',
+            'THB Playa de Palma El Cid'
+        ];
 
-        // Ejecutar la consulta
-        $conexion->multi_query($sql);
-
-        if ($conexion->affected_rows > 0){
-            echo "<h2> Se han insertado las filas </h2>";
-        } else {
-            echo "<h2> Error en las consultas </h2>";
+        // Iterar entre los hoteles, añadirlos a la consulta y ejecutarla
+        foreach ($hoteles as $hotel) {
+            $sql = "INSERT INTO hoteles (nombre) VALUES ('$hotel');";
+            echo $sql . '<br>';
+            $conexion->query($sql);
         }
     }
 
