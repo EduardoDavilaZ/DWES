@@ -40,7 +40,7 @@
                             echo '<option value="' . $fila["idHotel"] . '">' . $fila["nombre"] . '</option>';
                         }
                     } else {
-                        echo '<option value="-1"> No hay hoteles que mostrar </option>';
+                        echo '<option disable> No hay hoteles que mostrar </option>';
                     }
                 ?>
 

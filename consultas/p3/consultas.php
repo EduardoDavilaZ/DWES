@@ -40,13 +40,12 @@
         }
     }
 
-    function crearTablaUsuarios($conexion){
+    function crearTablaHoteles($conexion){
         // Preparar consulta en $sql
-        $sql = "CREATE TABLE usuarios (
-                    idUsuario smallint NOT NULL AUTO_INCREMENT,
+        $sql = "CREATE TABLE hoteles (
+                    idHotel tinyint NOT NULL AUTO_INCREMENT,
                     nombre varchar(60) NOT NULL,
-                    correo varchar(100) NOT NULL UNIQUE,
-                    constraint pk_idUsuario PRIMARY KEY (idUsuario)
+                    constraint pk_idHotel PRIMARY KEY (idHotel)
                 ); ";
 
         // Visualizar la consulta
@@ -56,7 +55,7 @@
         $resultado = $conexion->query($sql);
 
         if ($resultado){
-            echo "<h2> Se ha creado la tabla </h2>";
+            echo "<h2> Se ha creado la tabla hoteles </h2>";
         } else {
             echo "<h2> Error en la creación de la tabla </h2>";
         }

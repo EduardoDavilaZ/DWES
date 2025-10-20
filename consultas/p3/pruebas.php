@@ -5,6 +5,11 @@
     include 'consultas.php';
     
     /**
+     * Prueba de crear una tabla de ejemplo (tabla Hoteles).
+    */
+    crearTablaHoteles($conexion);
+
+    /**
      * Prueba de añadir una fila a la tabla del desplegable (hoteles).
     */
     añadirFila($conexion);
@@ -15,12 +20,7 @@
     añadirVariasFilas($conexion);
 
     /**
-     * Prueba de crear una tabla de ejemplo (tabla Usuarios).
-    */
-    crearTablaUsuarios($conexion);
-
-    /**
-     * Eliminar la base de datos desde el usuario root (si funciona)
+     * Eliminar la base de datos desde el usuario root
     */
     //eliminarBaseDeDatos($conexion);
 ?>
