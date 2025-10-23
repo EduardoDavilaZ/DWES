@@ -4,6 +4,8 @@
 
     echo var_dump($_POST) . '<br><br>';
 
+    // Si todo está correcto, se mantendrá a TRUE.
+    $ok = true;
     $responsable = "";
 
     if (!empty($_POST["nombre"])){
@@ -12,9 +14,18 @@
         $responsable = "NULL";
     }
 
+    if (isset($_POST["estados"])){
+        $estados = $_POST["estados"];
+    } else {
+        echo "No se han seleccionado estados";
+        echo '<a href="form.php">Volver</a>';
+        $ok = false;
+    }
+
+    // Sin validar
     $fecha = $_POST["fecha"];
     $hotel = $_POST["hotel"];
-    $estados = $_POST["estados"];
+    
     echo $responsable . "<----- <br>";
 
     function guardarInspeccion ($conexion, $responsable, $fecha, $hotel){
@@ -35,9 +46,19 @@
             echo $sql . '<br>';
             $conexion->query($sql);
         }
-        echo "Consultas ejecutadas correctamente";
+        if ($conexion->affected_rows > 0){ 
+            echo "<h2> Consultas ejecutadas correctamente </h2>";
+        } else {
+            echo "<h2> Error en las consultas </h2>";
+        }
     }
     
-    guardarInspeccion($conexion, $responsable, $fecha, $hotel);
-    guardarValoracion($conexion, $hotel, $estados);
+    if ($ok == true){
+        guardarInspeccion($conexion, $responsable, $fecha, $hotel);
+        guardarValoracion($conexion, $hotel, $estados);
+    } else {
+        echo "<br>No se ha insertado nada<br>";
+        die();
+    }
+    
 ?>

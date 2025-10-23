@@ -5,13 +5,13 @@
 
     function consultaSelect ($conexion) {
         $sql = "SELECT * FROM hoteles;";
-        echo 'Consulta: ' . $sql;
+        echo 'Consulta: ' . $sql . '<br>';
         return $conexion->query($sql);
     }
 
     function consultaCheckBox ($conexion) {
         $sql = "SELECT * FROM estado_piscina;";
-        echo 'Consulta: ' . $sql;
+        echo 'Consulta: ' . $sql . '<br>';
         return $conexion->query($sql);
     }
 
@@ -57,7 +57,7 @@
         
         <fieldset>
             <legend>Estado de la piscina</legend>
-
+            
             <?php 
                 if ($resultado2->num_rows > 0){
                     while($fila = $resultado2->fetch_array()){

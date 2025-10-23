@@ -2,13 +2,44 @@
     require '../../bdd/configdb.php';
     $conexion = new mysqli(SERVIDOR, USUARIO, PASSWORD, BBDD);
 
-    echo var_dump($_POST) . '<br><br>';
+    // Si todo está correcto, se mantendrá a TRUE.
+    $ok = true;
 
-    $responsable = $_POST["nombre"];
-    $fecha = $_POST["fecha"];
+    // ****** VALIDACIONES ******
+
+    echo "<strong>Nombre: </strong>";
+    if (!empty($_POST["nombre"])){
+        echo $_POST["nombre"];              echo "</br></br>";
+        $responsable = $_POST["nombre"];
+        $ok = true;
+    } else {
+        echo "No hay datos del nombre</br></br>";
+        echo '<a href="form.php">Volver</a>'; // Link para volver
+        $ok = false; // Usando die(), esto ya no es necesario
+        die(); // Detener
+    }
+
+    echo "<strong>Fecha: </strong>";
+    if (!empty($_POST["fecha"])){
+        echo $_POST["fecha"];               echo "</br></br>";
+        $fecha = $_POST["fecha"];
+    } else {
+        echo "No hay datos de la fecha</br></br>";
+        echo '<a href="form.php">Volver</a>';
+        $ok = false;
+        die();
+    }
+
     $hotel = $_POST["hotel"];
-    $estados = $_POST["estados"];
 
+    if (isset($_POST["estados"])){
+        $estados = $_POST["estados"];       echo "</br></br>";
+    } else {
+        echo "No se han seleccionado estados</br></br>";
+        echo '<a href="form.php">Volver</a>';
+        $ok = false;
+        die();
+    }
 
     function guardarInspeccion ($conexion, $responsable, $fecha, $hotel){
         $sql = "INSERT INTO inspecciones (nombreResponsable, fecha, idHotel) VALUES ('". $responsable ."', '" . $fecha . "' , " . $hotel . ");";
@@ -31,7 +62,12 @@
         echo "Consultas ejecutadas correctamente";
     }
     
-    guardarInspeccion($conexion, $responsable, $fecha, $hotel);
-    guardarValoracion($conexion, $hotel, $estados);
-
+    if ($ok){
+        guardarInspeccion($conexion, $responsable, $fecha, $hotel);
+        guardarValoracion($conexion, $hotel, $estados);
+    } else {
+        echo "<strong> Datos incompletos </strong>";
+        die();
+    }
+    
 ?>
