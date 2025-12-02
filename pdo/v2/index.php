@@ -2,7 +2,6 @@
     require_once 'config/config.php';
 
     if(!isset($_GET['c'])) $_GET['c'] = DEF_CONTROLLER; // Controlador por defecto
-    
     if(!isset($_GET['m'])) $_GET['m'] = DEF_METHOD; // Método por defecto
 
     $rutaControlador = RUTA_CONTROLADORES . $_GET['c'] . '.php';
