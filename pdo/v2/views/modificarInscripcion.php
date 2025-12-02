@@ -1,68 +1,110 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modificar inscripcion</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-</head>
-<body>
-    <main class="container">
-        <h1 class="display-5 text-center">Modificar inscripcion</h1>
-        <form action="./index.php?c=Inscripcion&m=guardarModificacion&idInscripcion=<?php $idInscripcion?>" class="w-50 mx-auto" method="post">
-            <fieldset>
-                <legend class="ms-4 m-2">Datos de inscripcion</legend>
+<h1 class="display-5 text-center">Modificar inscripcion</h1>
+<form action="./index.php?c=Inscripcion&m=guardarModificacion&idInscripcion=<?php $idInscripcion?>" class="w-50 mx-auto" method="post">
+    <fieldset>
+        <legend class="ms-4 m-2">Datos de inscripcion</legend>
 
-                <label for="clase" class="form-label">Clase: </label>
-                <input type="text" name="clase" id="clase" class="form-control" placeholder="<?php echo $inscripcion["clase"]; ?>">
+        <label for="clase" class="form-label">Clase: </label>
+        <input type="text" name="clase" id="clase" class="form-control" placeholder="<?php echo $inscripcion["clase"]; ?>">
 
-                <label for="profesor" class="form-label">Profesor: </label>
-                <select name="profesor" class="form-select" id="profesor">
-                    <?php
-                        while($fila = $profesores->fetch(PDO::FETCH_ASSOC)){
-                            if ($fila["idProfesor"] == $inscripcion["idTutor"]){
-                                echo '<option selected value="'. $fila["idProfesor"] .'">'. $fila["nombre"] .'</option>';
-                            } else {
-                                echo '<option value="'. $fila["idProfesor"] .'">'. $fila["nombre"] .'</option>';
-                            }
-                        }
-                    ?>
-                </select>
-
-                <label for="observaciones" class="form-label">Observaciones: </label>
-                <input type="text" name="observaciones" id="observaciones" class="form-control" placeholder="<?php echo $inscripcion["observaciones"]; ?>">
-
-                <label for="participa" class="form-label">Participa en la organización: </label>
-                    <?php
-                        if ($inscripcion["participa_organizacion"] == 1){
-                            echo '<input class="form-check-input m-2 p-2" type="checkbox" name="participa" id="participa" checked>';
-                        } else {
-                            echo '<input class="form-check-input m-2 p-2" type="checkbox" name="participa" id="participa">';
-                        }
-                    ?>
-            </fieldset>
-        
-            <fieldset>
-                <?php
-                    if ($alumnos){
-                        echo '<legend class="ms-4 m-2">Alumnos inscritos</legend>';
-                        echo '<table class="table table-borderless">';
-                        while($fila = $alumnos->fetch(PDO::FETCH_ASSOC)){
-                            echo '<tr class="text-center">' . 
-                                    '<td class="p-0"><input type="text" name="alumnos[]" class="form-control my-2" placeholder="'. $fila['nombre'] .'"></td>' .
-                                    '<td class="p-0"><a class="btn py-3" href="./index.php?c=Inscripcion&m=eliminarAlumno&idInscripcion='. $idInscripcion .
-                                        '&idAlumno='. $fila['idInscripcion_alumno'] .'" onclick="return confirm(\'¿Está seguro de eliminar?\')"> <i class="bi bi-trash"></i> </a> </td>' .
-                                '</tr>';
-                        }
-                        echo '</table>';
-                        echo '<a class="btn p-0 ms-2"><i class="bi bi-plus-square"></i>  Agregar alumno</a>';
+        <label for="profesor" class="form-label">Profesor: </label>
+        <select name="profesor" class="form-select" id="profesor">
+            <?php
+                foreach($profesores as $fila){
+                    if ($fila["idProfesor"] == $inscripcion["idTutor"]){
+                        echo '<option selected value="'. $fila["idProfesor"] .'">'. $fila["nombre"] .'</option>';
+                    } else {
+                        echo '<option value="'. $fila["idProfesor"] .'">'. $fila["nombre"] .'</option>';
                     }
-                ?>
-            </fieldset>
-            
-            <input type="submit" class="btn btn-primary my-4 form-control" value="Enviar">
-        </form>
-    </main>
-</body>
-</html>
+                }
+            ?>
+        </select>
+
+        <label for="observaciones" class="form-label">Observaciones: </label>
+        <input type="text" name="observaciones" id="observaciones" class="form-control" placeholder="<?php echo $inscripcion["observaciones"]; ?>">
+
+        <label for="participa" class="form-label">Participa en la organización: </label>
+            <?php
+                if ($inscripcion["participa_organizacion"] == 1){
+                    echo '<input class="form-check-input m-2 p-2" type="checkbox" name="participa" id="participa" checked>';
+                } else {
+                    echo '<input class="form-check-input m-2 p-2" type="checkbox" name="participa" id="participa">';
+                }
+            ?>
+    </fieldset>
+
+    <fieldset>
+        <legend class="ms-4 m-2">Alumnos inscritos</legend>
+        <table class="table table-borderless" id="tablaAlumnos">
+        <?php
+            if ($alumnos){
+                foreach($alumnos as $fila){
+                    echo '<tr class="text-center">' . 
+                            '<td class="p-0"><input type="text" name="alumnos[]" class="form-control my-2" placeholder="'. $fila['nombre'] .'"></td>' .
+                            '<td class="p-0"><a class="btn py-3" href="./index.php?c=Inscripcion&m=eliminarAlumnoDeInscripcion&idInscripcion='. $idInscripcion .
+                                '&idAlumno='. $fila['idInscripcion_alumno'] .'" onclick="return confirm(\'¿Está seguro de eliminar?\')"> <i class="bi bi-trash"></i> </a> </td>' .
+                        '</tr>';
+                }
+            } else {
+                echo "No hay alumnos inscritos. <br><br>";
+            }
+        ?>
+        </table>
+        <button class="btn p-0 ms-2" id="agregarAlumno"><i class="bi bi-plus-square"></i>  Agregar alumno</button>
+    </fieldset>
+    
+    <input type="submit" class="btn btn-primary my-4 form-control" value="Enviar">
+</form>
+
+<script>
+    const tablaAlumnos = document.getElementById("tablaAlumnos");
+    const btnAgregar = document.getElementById("agregarAlumno");
+
+    btnAgregar.addEventListener("click", function(e) {
+        e.preventDefault(); // evita que el botón haga submit
+
+        // Crear nueva fila
+        const fila = document.createElement("tr");
+        fila.classList.add("text-center");
+
+        // Crear celda con input
+        const tdInput = document.createElement("td");
+        tdInput.classList.add("p-0");
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.name = "nombreAlumno";
+        input.className = "form-control my-2";
+        input.placeholder = "Nuevo alumno";
+        tdInput.appendChild(input);
+
+        // Crear celda con botón añadir
+        const tdBtn = document.createElement("td");
+        tdBtn.classList.add("p-0");
+
+        const btnAñadirAlumno = document.createElement("a");
+        btnAñadirAlumno.href = "#"; // evitamos href fijo
+        btnAñadirAlumno.className = "btn py-3";
+        btnAñadirAlumno.innerHTML = '<i class="bi bi-plus-square"></i>';
+
+        // Cuando se haga clic en el botón añadir
+        btnAñadirAlumno.addEventListener("click", function(ev) {
+            ev.preventDefault();
+            const nombre = input.value.trim();
+            if (!nombre) {
+                alert("Escribe un nombre para el alumno");
+                return;
+            }
+            // Redirigir al controlador pasando idInscripcion y nombreAlumno
+            window.location.href = "./index.php?c=Inscripcion&m=añadirAlumnoInscripcion&idInscripcion=<?php echo $idInscripcion ?>&nombreAlumno=" + encodeURIComponent(nombre);
+        });
+
+        tdBtn.appendChild(btnAñadirAlumno);
+
+        // Agregar celdas a la fila
+        fila.appendChild(tdInput);
+        fila.appendChild(tdBtn);
+
+        // Agregar fila a la tabla
+        tablaAlumnos.appendChild(fila);
+    });
+</script>

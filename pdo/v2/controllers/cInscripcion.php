@@ -4,15 +4,17 @@
     require_once './models/Alumno.php';
 
     class CInscripcion{
+        
+        public $vista;
+        public $layout;
         private $objInscripcion;
         private $idInscripcion;
-
-        public $vista;
 
         public function __construct(){
             $this->objInscripcion = new Inscripcion();
             $this->idInscripcion = $_GET['idInscripcion'] ?? null;;
             $this->vista = '';
+            $this->layout = 'layout';
         }
 
         public function setIdInscripcion($idInscripcion){
@@ -24,9 +26,13 @@
         }
 
         public function modificarInscripcion(){
-            $profesores = (new Profesor())->listarProfesores();
+            $profesoresStmt = (new Profesor())->listarProfesores();
+            $profesores = $profesoresStmt->fetchAll(PDO::FETCH_ASSOC);
+
             $inscripcion = ($this->objInscripcion->obtenerInscripcion($this->idInscripcion))->fetch(PDO::FETCH_ASSOC);
-            $alumnos = (new Alumno())->listarAlumnosInscritos($this->idInscripcion);
+
+            $alumnosStmt = (new Alumno())->listarAlumnosInscritos($this->idInscripcion);
+            $alumnos = $alumnosStmt->fetchAll(PDO::FETCH_ASSOC);
 
             $this->vista = 'modificarInscripcion';
             return ['idInscripcion' => $this->idInscripcion, 'profesores' => $profesores, 'inscripcion' => $inscripcion, 'alumnos' => $alumnos];
@@ -73,6 +79,14 @@
 
         public function eliminarAlumnoDeInscripcion(){
             if ((new Alumno)->eliminar($this->idInscripcion, $_GET["idAlumno"])){
+                header("Location: index.php?c=Inscripcion&m=modificarInscripcion&idInscripcion=" . $this->idInscripcion);
+            } else {
+                header("Location: index.php?c=Inscripcion&m=modificarInscripcion&idInscripcion=" . $this->idInscripcion);
+            }
+        }
+
+        public function añadirAlumnoInscripcion(){
+            if ((new Alumno)->añadir($this->idInscripcion, $_GET["nombreAlumno"])){
                 header("Location: index.php?c=Inscripcion&m=modificarInscripcion&idInscripcion=" . $this->idInscripcion);
             } else {
                 header("Location: index.php?c=Inscripcion&m=modificarInscripcion&idInscripcion=" . $this->idInscripcion);

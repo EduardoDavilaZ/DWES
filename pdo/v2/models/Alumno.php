@@ -1,4 +1,5 @@
 <?php 
+    require_once './db/Conectar.php';
 
     class Alumno extends Conectar{
 
@@ -19,12 +20,38 @@
             }
         }
 
+        public function listarAlumnos(){
+            $sql = "SELECT * FROM inscripciones_alumnos;";
+
+            try{
+                $sth = $this->conexion->prepare($sql);
+                $sth->execute();
+                return $sth;
+            } catch(PDOException $e){
+                echo "Error en la consulta: " . $e->getMessage();
+                return false;
+            }
+        }
+
         public function eliminar($idInscripcion, $idAlumno){
             $sql = "DELETE FROM inscripciones_alumnos WHERE idInscripcion_alumno = :idAlumno AND idInscripcion = :idInscripcion;";
 
             try{
                 $sth = $this->conexion->prepare($sql);
                 $sth->execute(['idAlumno' => $idAlumno, 'idInscripcion' => $idInscripcion]);
+                return true;
+            } catch(PDOException $e){
+                echo "Error en la consulta: " . $e->getMessage();
+                return false;
+            }
+        }
+
+        public function añadir($idInscripcion, $nombreAlumno){
+            $sql = "INSERT INTO inscripciones_alumnos (idInscripcion, nombre) VALUES (:idInscripcion, :nombreAlumno);";
+
+            try{
+                $sth = $this->conexion->prepare($sql);
+                $sth->execute(['idInscripcion' => $idInscripcion, 'nombreAlumno' => $nombreAlumno]);
                 return true;
             } catch(PDOException $e){
                 echo "Error en la consulta: " . $e->getMessage();

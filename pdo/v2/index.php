@@ -11,14 +11,19 @@
     $controlador = 'C' . $_GET['c'];
     $objControlador = new $controlador();
 
-    $datos = []; // Por si el método devuelve algo
+    $datos = []; // Guardar los datos que se obtienen del método
 
     if (method_exists($objControlador, $_GET['m'])){
         $datos = $objControlador->{    $_GET['m']  }();
     }
+    if ($objControlador->vista != '') {
 
-    if ($objControlador->vista != ''){
-        if (is_array($datos)) extract($datos); // Convierte cada campo del array asociativo en una variable
-        require_once RUTA_VISTAS .$objControlador->vista . '.php'; // Ruta de las vistas + nombre de la vista + .php
+        if (is_array($datos)) extract($datos); 
+
+        $vistaActual = RUTA_VISTAS . $objControlador->vista . '.php';
+
+        $layout = $objControlador->layout;
+
+        require_once RUTA_VISTAS . $layout . '.php';
     }
 ?>
