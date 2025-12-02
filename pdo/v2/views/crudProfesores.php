@@ -10,11 +10,11 @@
                     '</tr>' .
                 '</thead>';
 
-        while($fila = $profesores->fetch(PDO::FETCH_ASSOC)){
-            $id = $fila["idProfesor"];
+        foreach($profesores as $profesor){
+            $id = $profesor["idProfesor"];
 
             echo'<tr class="text-center">' . 
-                    '<td>' . $fila["nombre"] . '</td>' .
+                    '<td>' . $profesor["nombre"] . '</td>' .
                     '<td>' . '<a href="./index.php?c=Profesor&m=modificar&idProfesor='. $id .'"><i class="bi bi-pencil-square"></i></a>' . '</td>' .
                     '<td>' . '<a href="./index.php?c=Profesor&m=eliminar&idProfesor='. $id .'" onclick="return confirm(\'¿Está seguro de eliminar?\')"><i class="bi bi-trash"></i></a>' .
                 '</tr>';

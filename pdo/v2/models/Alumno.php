@@ -13,7 +13,8 @@
             try{
                 $sth = $this->conexion->prepare($sql);
                 $sth->execute(['idInscripcion' => $idInscripcion]);
-                return $sth;
+                $alumnos = $sth->fetchAll(PDO::FETCH_ASSOC);
+                return $alumnos;
             } catch(PDOException $e){
                 echo "Error en la consulta: " . $e->getMessage();
                 return false;
@@ -24,9 +25,9 @@
             $sql = "SELECT * FROM inscripciones_alumnos;";
 
             try{
-                $sth = $this->conexion->prepare($sql);
-                $sth->execute();
-                return $sth;
+                $sth = $this->conexion->query($sql);
+                $alumnos = $sth->fetchAll(PDO::FETCH_ASSOC);
+                return $alumnos;
             } catch(PDOException $e){
                 echo "Error en la consulta: " . $e->getMessage();
                 return false;
@@ -39,7 +40,7 @@
             try{
                 $sth = $this->conexion->prepare($sql);
                 $sth->execute(['idAlumno' => $idAlumno, 'idInscripcion' => $idInscripcion]);
-                return true;
+                return $sth->rowCount() > 0 ? true : false;
             } catch(PDOException $e){
                 echo "Error en la consulta: " . $e->getMessage();
                 return false;
@@ -52,7 +53,7 @@
             try{
                 $sth = $this->conexion->prepare($sql);
                 $sth->execute(['idInscripcion' => $idInscripcion, 'nombreAlumno' => $nombreAlumno]);
-                return true;
+                return $sth->rowCount() > 0 ? true : false;
             } catch(PDOException $e){
                 echo "Error en la consulta: " . $e->getMessage();
                 return false;

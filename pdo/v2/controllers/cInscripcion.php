@@ -26,21 +26,18 @@
         }
 
         public function modificarInscripcion(){
-            $profesoresStmt = (new Profesor())->listarProfesores();
-            $profesores = $profesoresStmt->fetchAll(PDO::FETCH_ASSOC);
+            $profesores = (new Profesor())->listarProfesores();
+            $inscripcion = $this->objInscripcion->obtenerInscripcion($this->idInscripcion);
 
-            $inscripcion = ($this->objInscripcion->obtenerInscripcion($this->idInscripcion))->fetch(PDO::FETCH_ASSOC);
-
-            $alumnosStmt = (new Alumno())->listarAlumnosInscritos($this->idInscripcion);
-            $alumnos = $alumnosStmt->fetchAll(PDO::FETCH_ASSOC);
+            $alumnos = (new Alumno())->listarAlumnosInscritos($this->idInscripcion);
 
             $this->vista = 'modificarInscripcion';
             return ['idInscripcion' => $this->idInscripcion, 'profesores' => $profesores, 'inscripcion' => $inscripcion, 'alumnos' => $alumnos];
         }
 
         public function guardarModificacion() {
-            $inscripcion = ($this->objInscripcion->obtenerInscripcion($this->idInscripcion))->fetch(PDO::FETCH_ASSOC);
-            $alumnosInscritos = (new Alumno())->listarAlumnosInscritos($this->idInscripcion)->fetchAll(PDO::FETCH_ASSOC);
+            $inscripcion = ($this->objInscripcion->obtenerInscripcion($this->idInscripcion));
+            $alumnosInscritos = (new Alumno())->listarAlumnosInscritos($this->idInscripcion);
 
             $clase = empty($_POST["clase"]) ? $inscripcion["clase"] : $_POST["clase"];
             $idTutor = $_POST["profesor"];
@@ -55,11 +52,12 @@
                 $alumnosActualizar[$fila['idInscripcion_alumno']] = $nuevoNombre;
             }
 
+            
             if ($this->objInscripcion->modificar($this->idInscripcion, $clase, $idTutor, 
             $observaciones, $participa, $alumnosActualizar)) {
                 header("Location: index.php?c=Inscripcion&m=listarInscripciones");
             } else {
-                header("Location: index.php?c=Inscripcion&m=listarInscripciones");
+                echo "ERROR";
             }
         }
 

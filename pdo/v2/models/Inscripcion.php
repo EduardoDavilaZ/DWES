@@ -11,7 +11,8 @@
 
             try{
                 $resultado = $this->conexion->query($sql);
-                return $resultado;
+                $inscripciones = $resultado->fetchAll(PDO::FETCH_ASSOC);
+                return $inscripciones;
             } catch (PDOException $e){
                 die("Error al listar: " . $e->getMessage());
             }
@@ -22,7 +23,8 @@
 
             try{
                 $resultado = $this->conexion->query($sql);
-                return $resultado;
+                $inscripciones = $resultado ->fetchAll(PDO::FETCH_ASSOC);
+                return $inscripciones;
             } catch (PDOException $e){
                 die("Error al listar: " . $e->getMessage());
             }
@@ -33,7 +35,8 @@
             try{
                 $sth = $this->conexion->prepare($sql);
                 $sth->execute(['idInscripcion' => $idInscripcion]);
-                return $sth;
+                $inscripcion = $sth->fetch(PDO::FETCH_ASSOC);
+                return $inscripcion;
             } catch(PDOException $e){
                 die("Error al obtener inscripción: " . $e->getMessage());
             }

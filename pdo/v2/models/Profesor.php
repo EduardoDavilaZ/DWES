@@ -12,7 +12,8 @@
 
             try{
                 $resultado = $this->conexion->query($sql);
-                return $resultado;
+                $profesores = $resultado->fetchAll(PDO::FETCH_ASSOC);
+                return $profesores;
             } catch(PDOException $e){
                 die("Error en la consulta: " . $e->getMessage());
             }
@@ -24,7 +25,8 @@
             try {
                 $sth = $this->conexion->prepare($sql);
                 $sth->execute(['idProfesor' => $idProfesor]);
-                return $sth;
+                $profesor = $sth->fetch(PDO::FETCH_ASSOC);
+                return $profesor;
             } catch(PDOException $e){
                 echo "Error: " . $e->getMessage();
                 return false;
@@ -37,7 +39,7 @@
             try{
                 $sth = $this->conexion->prepare($sql);
                 $sth->execute(['idProfesor' => $idProfesor, 'nombre' => $nombre]);
-                return $sth;
+                return $sth->rowCount() > 0 ? true : false;
             } catch(PDOException $e){
                 echo "Error: " . $e->getMessage();
                 return false;
@@ -50,7 +52,7 @@
             try{
                 $sth = $this->conexion->prepare($sql);
                 $sth->execute(['idProfesor' => $idProfesor]);
-                return $sth;
+                return $sth->rowCount() > 0 ? true : false;
             } catch(PDOException $e){
                 echo "Error: " . $e->getMessage();
                 return false;

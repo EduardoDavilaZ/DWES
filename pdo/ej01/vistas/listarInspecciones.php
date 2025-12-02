@@ -6,7 +6,6 @@
     <title>Inspecciones</title>
 </head>
 <body>
-
     <style>
         table   {border-collapse: collapse;}
         tr, td  {border: 1px solid black;}

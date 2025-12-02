@@ -1,5 +1,5 @@
 <h1 class="display-5 text-center">Modificar inscripcion</h1>
-<form action="./index.php?c=Inscripcion&m=guardarModificacion&idInscripcion=<?php $idInscripcion?>" class="w-50 mx-auto" method="post">
+<form action="./index.php?c=Inscripcion&m=guardarModificacion&idInscripcion=<?php echo $idInscripcion?>" class="w-50 mx-auto" method="post">
     <fieldset>
         <legend class="ms-4 m-2">Datos de inscripcion</legend>
 
@@ -60,25 +60,22 @@
     const btnAgregar = document.getElementById("agregarAlumno");
 
     btnAgregar.addEventListener("click", function(e) {
-        e.preventDefault(); // evita que el botón haga submit
+        e.preventDefault();
 
-        // Crear nueva fila
-        const fila = document.createElement("tr");
+        const fila = document.createElement("tr"); // Nueva fila
         fila.classList.add("text-center");
 
-        // Crear celda con input
-        const tdInput = document.createElement("td");
+        const tdInput = document.createElement("td"); // Nueva celda
         tdInput.classList.add("p-0");
 
-        const input = document.createElement("input");
+        const input = document.createElement("input"); // Añadir input text
         input.type = "text";
         input.name = "nombreAlumno";
         input.className = "form-control my-2";
         input.placeholder = "Nuevo alumno";
         tdInput.appendChild(input);
 
-        // Crear celda con botón añadir
-        const tdBtn = document.createElement("td");
+        const tdBtn = document.createElement("td"); // Celda con boton de añadir
         tdBtn.classList.add("p-0");
 
         const btnAñadirAlumno = document.createElement("a");
@@ -86,7 +83,6 @@
         btnAñadirAlumno.className = "btn py-3";
         btnAñadirAlumno.innerHTML = '<i class="bi bi-plus-square"></i>';
 
-        // Cuando se haga clic en el botón añadir
         btnAñadirAlumno.addEventListener("click", function(ev) {
             ev.preventDefault();
             const nombre = input.value.trim();
@@ -100,11 +96,9 @@
 
         tdBtn.appendChild(btnAñadirAlumno);
 
-        // Agregar celdas a la fila
         fila.appendChild(tdInput);
         fila.appendChild(tdBtn);
 
-        // Agregar fila a la tabla
         tablaAlumnos.appendChild(fila);
     });
 </script>

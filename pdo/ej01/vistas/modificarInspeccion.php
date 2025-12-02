@@ -18,7 +18,6 @@
     
         <label for="hotel">Hotel</label>
         <select name="hotel" id="hotel">
-        
             <?php
                 foreach($hoteles as $hotel){
                     if ($hotel['idHotel'] == $inspeccion['idHotel']) {
@@ -32,6 +31,5 @@
 
         <input type="submit" value="Enviar">
     </form>
-
 </body>
 </html>

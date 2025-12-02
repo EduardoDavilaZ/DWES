@@ -1,26 +1,29 @@
-<?php 
-    echo "hola mundo";
-?>
-
 <h1 class="display-4 text-center">Alumnos inscritos en el torneo</h1>
 
-<table class="table">
-    <?php 
-        while($fila = $inscripciones->fetch(PDO::FETCH_ASSOC)){
-            echo '<tr>';
-            $cont = 0;
-            foreach ($alumnos as $alu){
-                if ($alu['idInscripcion'] == $fila['idInscripcion']){
-                    $cont++;
-                }
-            }
+<table class="table w-50 mx-auto">
+    <thead class="table-primary">
+        <tr class="text-center">
+            <th>Clase</th>
+            <th>Alumnos inscritos</th>
+        </tr>
+    </thead>
+    <tbody>
+<?php 
+    foreach ($inscripciones as $inscripcion){
+        echo '<tr>' .
+                '<td class="lead text-center"> ' . $inscripcion['clase'] . '</td>' .
 
-            echo '<td rowspan='. $cont .' > ' . $fila['clase'] . '</td>';
-            foreach ($alumnos as $alu){
-                echo '<td> ' . $alu['nombre'] . '</td>';
-            }
-            echo '</tr>';
-        }
-
-    ?>
+                '<td>' . 
+                    '<ul class="list-group">';
+                        foreach($alumnos as $alu){
+                            if ($inscripcion['idInscripcion'] == $alu['idInscripcion']){
+                                echo '<li class="list-group-item border-0"> ' . $alu['nombre'] . '</li>';
+                            }
+                        }
+        echo        '</ul>' . 
+                '</td>' .
+            '</tr>';
+    }
+?>
+    </tbody>
 </table>

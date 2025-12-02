@@ -11,12 +11,12 @@
                     '</tr>' .
                 '</thead>';
 
-        while($fila = $inscripciones->fetch(PDO::FETCH_ASSOC)){
-            $id = $fila["idInscripcion"];
+        foreach ($inscripciones as $inscripcion){
+            $id = $inscripcion["idInscripcion"];
 
             echo'<tr class="text-center">' . 
-                    '<td>' . $fila["clase"] . '</td>' .
-                    '<td>' . $fila["profesor"] . '</td>' .
+                    '<td>' . $inscripcion["clase"] . '</td>' .
+                    '<td>' . $inscripcion["profesor"] . '</td>' .
                     '<td>' . '<a href="./index.php?c=Inscripcion&m=modificarInscripcion&idInscripcion='. $id .'"><i class="bi bi-pencil-square"></i></a>' . '</td>' .
                     '<td>' . '<a href="./index.php?c=Inscripcion&m=eliminarInscripcion&idInscripcion='. $id .'" onclick="return confirm(\'¿Está seguro de eliminar?\')"><i class="bi bi-trash"></i></a>' .
                 '</tr>';
