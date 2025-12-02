@@ -4,7 +4,6 @@
     require_once './models/Alumno.php';
 
     class CInscripcion{
-        
         public $vista;
         public $layout;
         private $objInscripcion;
@@ -52,13 +51,13 @@
                 $alumnosActualizar[$fila['idInscripcion_alumno']] = $nuevoNombre;
             }
 
-            
-            if ($this->objInscripcion->modificar($this->idInscripcion, $clase, $idTutor, 
-            $observaciones, $participa, $alumnosActualizar)) {
+            $resultado = $this->objInscripcion->modificar($this->idInscripcion, $clase, $idTutor, $observaciones, $participa, $alumnosActualizar);
+            if ($resultado == true) {
                 header("Location: index.php?c=Inscripcion&m=listarInscripciones");
-            } else {
-                echo "ERROR";
+                exit;
             }
+            $this->vista = 'modificarInscripcion';
+            return ['mensaje' => $resultado];
         }
 
         public function listarInscripciones(){

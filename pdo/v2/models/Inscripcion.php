@@ -66,8 +66,7 @@
                 return true;
             } catch (PDOException $e) {
                 $this->conexion->rollBack();
-                echo "Error: " . $e->getMessage();
-                return false;
+                return $this->mensaje($e->getCode());
             }
         }
 
@@ -90,6 +89,15 @@
                 $this->conexion->rollBack();
                 echo "Error: " . $e->getMessage();
                 return false;
+            }
+        }
+
+        private function mensaje($codigo){
+            switch ($codigo) {
+                case 23000:
+                    return 'Ya existe una clase con el mismo nombre';
+                default:
+                    return 'Algo ha fallado';
             }
         }
     }

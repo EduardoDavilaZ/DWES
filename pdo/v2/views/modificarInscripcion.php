@@ -1,13 +1,20 @@
 <h1 class="display-5 text-center">Modificar inscripcion</h1>
+
+<?php 
+    if (!empty($mensaje)){
+        echo $mensaje;
+    }
+?>
+
 <form action="./index.php?c=Inscripcion&m=guardarModificacion&idInscripcion=<?php echo $idInscripcion?>" class="w-50 mx-auto" method="post">
     <fieldset>
         <legend class="ms-4 m-2">Datos de inscripcion</legend>
 
         <label for="clase" class="form-label">Clase: </label>
-        <input type="text" name="clase" id="clase" class="form-control" placeholder="<?php echo $inscripcion["clase"]; ?>">
+        <input type="text" name="clase" id="clase" maxlength="6" class="form-control" placeholder="<?php echo $inscripcion["clase"]; ?>">
 
         <label for="profesor" class="form-label">Profesor: </label>
-        <select name="profesor" class="form-select" id="profesor">
+        <select name="profesor" maxlength="200" class="form-select" id="profesor">
             <?php
                 foreach($profesores as $fila){
                     if ($fila["idProfesor"] == $inscripcion["idTutor"]){
@@ -39,7 +46,7 @@
             if ($alumnos){
                 foreach($alumnos as $fila){
                     echo '<tr class="text-center">' . 
-                            '<td class="p-0"><input type="text" name="alumnos[]" class="form-control my-2" placeholder="'. $fila['nombre'] .'"></td>' .
+                            '<td class="p-0"><input type="text" maxlength="100" name="alumnos[]" class="form-control my-2" placeholder="'. $fila['nombre'] .'"></td>' .
                             '<td class="p-0"><a class="btn py-3" href="./index.php?c=Inscripcion&m=eliminarAlumnoDeInscripcion&idInscripcion='. $idInscripcion .
                                 '&idAlumno='. $fila['idInscripcion_alumno'] .'" onclick="return confirm(\'¿Está seguro de eliminar?\')"> <i class="bi bi-trash"></i> </a> </td>' .
                         '</tr>';
@@ -71,6 +78,7 @@
         const input = document.createElement("input"); // Añadir input text
         input.type = "text";
         input.name = "nombreAlumno";
+        input.maxLength = "100";
         input.className = "form-control my-2";
         input.placeholder = "Nuevo alumno";
         tdInput.appendChild(input);
