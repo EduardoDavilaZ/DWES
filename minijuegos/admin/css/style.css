@@ -1,0 +1,104 @@
+:root{
+    --color1: rgb(1, 78, 125);
+    --color2: rgb(133, 21, 21);
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+header{
+    color: white;
+    background-color: var(--color1);
+}
+
+nav{
+    width: 100%;
+    background-color:aliceblue;
+    padding: 1rem 0rem;
+    border-bottom: 1px solid var(--color1);
+
+    ul{
+        list-style: none;
+        display: flex;
+        padding: 0;
+        margin: 0;
+        li{
+            flex-grow: 1;
+            text-align: center;
+            margin: 0;
+            a{
+                text-decoration: none;
+                padding: .5rem 1rem;
+                background-color: var(--color1);
+                color: white;
+                border-radius: 1rem;
+            }
+        }
+    }
+}
+
+.crud{
+    tr{
+        td{
+            img{
+                max-width: 60px;
+                height: auto;
+            }
+            
+            a{
+                .bi-pencil-square{
+                    color: var(--color1) !important;
+                }
+
+                .bi-trash{
+                    color: var(--color2) !important;
+                }
+            }
+            
+        }
+    }
+}
+
+.color1{
+    background-color: var(--color1) !important;
+    color: White !important;
+}
+
+@media (min-width: 992px) {
+    main{
+        & > a{
+            width: 20%;
+        }
+    }
+}
+
+@media (max-width: 992px) {
+    main{
+        & > a{
+            width: 40%;
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    main{
+        & > a{
+            width: 70%;
+        }
+    }
+}
+
+.toast-error{
+    position: fixed;
+    background-color: rgb(148, 58, 58);
+    color: white;
+    text-align: center;
+    width: 30vh;
+    padding: 1rem 0rem;
+    bottom: 1vh;
+    right: .5vw;
+    border-radius: 1rem;
+}
