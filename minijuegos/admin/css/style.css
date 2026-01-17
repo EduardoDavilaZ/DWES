@@ -14,6 +14,18 @@ header{
     background-color: var(--color1);
 }
 
+@media (max-width: 540px) {
+    .col-ocultar {
+        display: none !important;
+    }
+}
+
+@media (max-width: 380px) {
+    .col-ocultar-min {
+        display: none !important;
+    }
+}
+
 nav{
     width: 100%;
     background-color:aliceblue;
@@ -23,18 +35,20 @@ nav{
     ul{
         list-style: none;
         display: flex;
-        padding: 0;
+        padding: 0rem 1rem;
         margin: 0;
+        gap: 1rem;
+        flex-wrap: wrap;
         li{
             flex-grow: 1;
             text-align: center;
             margin: 0;
+            padding: .5rem 1rem;
+            background-color: var(--color1);
+            border-radius: 1rem;
             a{
                 text-decoration: none;
-                padding: .5rem 1rem;
-                background-color: var(--color1);
                 color: white;
-                border-radius: 1rem;
             }
         }
     }
@@ -101,4 +115,30 @@ nav{
     bottom: 1vh;
     right: .5vw;
     border-radius: 1rem;
+}
+
+.del-img{
+    position: relative;
+    overflow: hidden;
+
+    &:hover{
+        &::after{
+            content: "\F659"; 
+            font-family: "bootstrap-icons";
+            pointer-events: none;
+            position: absolute;
+            left: 50%;
+            top: 55%;
+            translate: -50% -50%;
+            padding: .1rem;
+            width: 1.75rem;
+            height: 1.75rem;
+            border-radius: 1rem;
+            background-color: rgb(130, 130, 130);
+            color: white !important;
+        }
+        img{
+            opacity: 0.5;
+        }
+    }
 }

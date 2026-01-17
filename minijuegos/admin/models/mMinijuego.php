@@ -19,7 +19,7 @@
         
         public function obtenerJuego($idMinijuego){
             $sql = 'SELECT * FROM minijuegos WHERE idMinijuego = :idMinijuego';
-
+        
             try{
                 $stmt = $this->conexion->prepare($sql);
                 $stmt->execute(['idMinijuego' => $idMinijuego]);
@@ -31,35 +31,53 @@
         }
 
         public function añadir($nombre, $creador, $descripcion, $activo, $existeImg){
-            $sql1 = 'INSERT INTO minijuegos (nombre, creador, descripcion, activo) VALUES (:nombre, :creador, :descripcion, :activo);';
-            $sql2 = 'UPDATE minijuegos SET rutaImg = :rutaImg WHERE idMinijuego = :idMinijuego;';
-        
-            try{
+            $sql1 = 'INSERT INTO minijuegos (nombre, creador, descripcion, activo) VALUES (:nombre, :creador, :descripcion, :activo)';
+            $sql2 = 'UPDATE minijuegos SET img = :img WHERE idMinijuego = :idMinijuego';
+
+            try {
                 $this->conexion->beginTransaction();
 
                 $stmt = $this->conexion->prepare($sql1);
-                $stmt->execute(['nombre' => $nombre, 'creador' => $creador, 'descripcion' => $descripcion, 'activo' => $activo]);
+                $stmt->bindValue(':nombre', $nombre, PDO::PARAM_STR);
+                $stmt->bindValue(':creador', $creador, PDO::PARAM_STR);
+                $stmt->bindValue(':descripcion', $descripcion, PDO::PARAM_STR);
+                $stmt->bindValue(':activo', (int)$activo, PDO::PARAM_INT); // Sin bidnValue, los 0 se introducen a la bd como 1
+                $stmt->execute();
 
                 $id = $this->conexion->lastInsertId();
 
                 if ($existeImg){
                     $stmt = $this->conexion->prepare($sql2);
-                    $rutaImg = RUTA_IMG . $id . '.webp';
-                    $stmt->execute(['rutaImg' => $rutaImg, 'idMinijuego' => $id]);
+                    $img = $id . '.webp';
+                    $stmt->bindValue(':img', $img, PDO::PARAM_STR);
+                    $stmt->bindValue(':idMinijuego', $id, PDO::PARAM_INT);
+                    $stmt->execute();
                 }
-                
+
                 $this->conexion->commit();
                 return ['insertId' => $id];
-            } catch(PDOException $e){
+
+            } catch (PDOException $e){
                 $this->conexion->rollBack();
                 return $e->getCode();
             }
         }
 
-        public function modificar(){
-            try{
-                // Lo hago después
-            } catch(PDOException $e){
+        public function modificar($id, $nombre, $creador, $descripcion, $img, $activo){
+            $sql = 'UPDATE minijuegos SET nombre = :nombre, creador = :creador, descripcion = :descripcion, img = :img, activo = :activo WHERE idMinijuego = :id;';
+
+            try {
+                $stmt = $this->conexion->prepare($sql);
+                $stmt->bindValue(':nombre', $nombre, PDO::PARAM_STR);
+                $stmt->bindValue(':creador', $creador, PDO::PARAM_STR);
+                $stmt->bindValue(':descripcion', $descripcion, PDO::PARAM_STR);
+                $stmt->bindValue(':img', $img, PDO::PARAM_STR);
+                $stmt->bindValue(':activo', (int)$activo, PDO::PARAM_INT); // Sin bidnValue, los 0 se introducen a la bd como 1
+                $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+                
+                $stmt->execute();
+                return $stmt->rowCount() > 0 ? true : false;
+            } catch (PDOException $e){
                 return $e->getCode();
             }
         }
@@ -70,6 +88,45 @@
             try{
                 $stmt = $this->conexion->prepare($sql);
                 $stmt->execute(['idMinijuego' => $idMinijuego]);
+                return $stmt->rowCount() > 0 ? true : false;
+            } catch(PDOException $e){
+                return $e->getCode();
+            }
+        }
+
+        public function insertarFilas($filas){
+            $sql = 'INSERT INTO minijuegos (idMinijuego, nombre, creador, descripcion, fechaCreacion, img, activo) VALUES (:idMinijuego, :nombre, :creador, :descripcion, :fechaCreacion, :img, :activo)';
+
+            try{
+                $this->conexion->beginTransaction();
+                $stmt = $this->conexion->prepare($sql);
+
+                foreach ($filas as $fila) {
+                    $stmt->execute([
+                        'idMinijuego'   => $fila['idMinijuego'],
+                        'nombre'        => $fila['nombre'],
+                        'creador'       => $fila['creador'],
+                        'descripcion'   => $fila['descripcion'],
+                        'fechaCreacion' => $fila['fechaCreacion'],
+                        'img'           => $fila['img'],
+                        'activo'        => $fila['activo']
+                    ]);
+                }
+                $this->conexion->commit();
+                return $stmt->rowCount() > 0 ? true : false;
+            } catch(PDOException $e){
+                $this->conexion->rollBack();
+                $codigo = $e->errorInfo[1]; // Da el error mysql, no el de PDO
+                return $codigo;
+            }
+        }
+
+        public function eliminarImg($idMinijuego){
+            $sql = 'UPDATE minijuegos SET img = NULL WHERE idMinijuego = :id;';
+
+            try{
+                $stmt = $this->conexion->prepare($sql);
+                $stmt->execute(['id' => $idMinijuego]);
                 return $stmt->rowCount() > 0 ? true : false;
             } catch(PDOException $e){
                 return $e->getCode();

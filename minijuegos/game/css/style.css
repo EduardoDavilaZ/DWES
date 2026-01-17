@@ -144,6 +144,15 @@ article{
     }
 }
 
+.inactivo {
+    opacity: 0.5;
+}
+
+.btn-gris {
+    background-color: rgb(80, 80, 80);
+    color: white;
+}
+
 @media (min-width: 992px) {
     .grid{
         grid-template-columns: repeat(5, 1fr);

@@ -24,7 +24,7 @@
                     <label for="nombre" class="form-label mt-3">Nombre: </label>
                         <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre del minijuego">
 
-                    <label for="creador" class="form-label mt-3">Creador: </label>
+                    <label for="creador" class="form-label mt-3">Creador (Opcional): </label>
                         <input type="text" name="creador" id="creador" class="form-control" placeholder="Creador del minijuego">
 
                     <label for="descripcion" class="form-label mt-3">Descripción: </label>
@@ -48,8 +48,10 @@
 
                     <label for="img" class="form-label mt-3">Imágen: </label>
                         <input type="file" name="imagen" id="imagen" class="form-control" accept="image/*">
-
-                <input type="submit" class="btn my-4 form-control color1" value="Enviar">
+                
+                    <input type="submit" class="btn my-4 form-control color1" value="Enviar">
+                    
+                </fieldset>
             </form>
         </main>
 

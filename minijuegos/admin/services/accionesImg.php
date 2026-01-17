@@ -53,5 +53,12 @@
             imagewebp($imagen, $destino, $calidad);
             return true;
         }
+
+        public static function eliminar($id){
+            $ruta = RUTA_IMG . $id . '.webp';
+            if (file_exists($ruta)) {
+                unlink($ruta);
+            }
+        }
     }
 ?>

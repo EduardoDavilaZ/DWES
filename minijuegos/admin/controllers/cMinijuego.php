@@ -1,8 +1,8 @@
 <?php 
     require_once './models/mMinijuego.php';
-    require_once './services/validarImg.php';
-    require_once './services/crearPDF.php';
-    require_once './services/CSV.php';
+    require_once './services/accionesImg.php';
+    require_once './services/accionesPDF.php';
+    require_once './services/accionesCSV.php';
     require_once './lib/fpdf186/fpdf.php';
 
     class cMinijuego{
@@ -34,14 +34,21 @@
         }
 
         public function vModificar(){
+            $juego = $this->objMinijuego->obtenerJuego($this->idMinijuego);
             $this->vista = "vModificar";
+            if (is_array($juego)){
+                return ['juego' => $juego];
+            } else {
+                $this->mensaje = "Algo falló, código de error: " . $juego;
+                return ['mensaje' => $this->mensaje];
+            }
+        }
+
+        public function vImportarCSV(){
+            $this->vista = "vImportarCSV";
         }
 
         public function añadir(){
-            var_dump($_POST);
-            var_dump(value: $_FILES);
-            
-            
             if (!empty( $_POST['nombre'])){
                 $nombre = $_POST['nombre'];
             } else {
@@ -107,6 +114,78 @@
         public function exportarCSV(){
             $minijuegos = $this->objMinijuego->listarMinijuegos();
             CSV::exportar($minijuegos);
+            CSV::descargar();
+        }
+
+        public function importarCSV(){
+            if (empty($_FILES['csv'])){
+                $this->mensaje = "Error al leer el CSV";
+                $this->vista = "vImportarCSV";
+                return ["mensaje" => $this->mensaje];
+            }
+            
+            $filas = CSV::importar($_FILES['csv']);
+            
+            $resultado = $this->objMinijuego->insertarFilas($filas);
+
+            if (is_bool($resultado)){
+                    header('Location: index.php?c=Minijuego&m=listarMinijuegos');
+            } else {
+                if ($resultado == 1062){
+                    $this->mensaje = 'Error de clave duplicada';
+                } else {
+                    $this->mensaje = 'Error desconocido';
+                }
+                
+                $this->vista = "vImportarCSV";
+                return ["mensaje" => $this->mensaje];
+            }
+        }
+
+        public function modificar(){
+            $juego = $this->objMinijuego->obtenerJuego($this->idMinijuego);
+
+            $nombre = !empty($_POST['nombre']) ? $_POST['nombre'] : $juego['nombre'];
+            $creador = !empty($_POST['creador']) ? $_POST['creador'] : $juego['creador'];
+            $descripcion = !empty($_POST['descripcion']) ? $_POST['descripcion'] : $juego['descripcion'];
+            $activo = (int)$_POST['activo'];
+
+            if (!empty($_FILES['imagen']['name'])) {
+                $validado = Imagen::validar($_FILES['imagen']);
+
+                if (!$validado['resultado']){
+                    $this->mensaje = $validado['msg'];
+                    $this->vista = "vModificar";
+                    return ["mensaje" => $this->mensaje];
+                } else {
+                    $img = $this->idMinijuego . '.webp';
+                }
+
+                $existeImg = true;
+            } else {
+                $existeImg = false;
+            }
+
+            $this->objMinijuego->modificar($this->idMinijuego, $nombre, $creador, $descripcion, $img, $activo);
+
+            if ($existeImg) {
+                Imagen::eliminar($this->idMinijuego);
+                Imagen::guardar($_FILES['imagen'], $this->idMinijuego);
+            }
+
+            header('Location: index.php?c=Minijuego&m=listarMinijuegos');
+        }
+
+        public function eliminarImg(){
+            $resultado = $this->objMinijuego->eliminarImg($this->idMinijuego);
+
+            if ($resultado){
+                Imagen::eliminar($this->idMinijuego);
+            } else {
+                $this->mensaje = 'Error al eliminar la imagen';
+            }
+            
+            header('Location: index.php?c=Minijuego&m=listarMinijuegos');
         }
     }
 ?>

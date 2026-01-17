@@ -4,4 +4,6 @@
 
     define("DEF_CONTROLLER","Minijuego");
     define("DEF_METHOD","listarMinijuegos");
+
+    define('RUTA_IMG', '../uploads/minijuegos/');
 ?>

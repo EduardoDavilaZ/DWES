@@ -28,7 +28,7 @@
                             foreach($ultimosJuegos as $juego){
                                 echo '
                                     <a href="index.php?c=Minijuego&m=pantallaCarga&id='. $juego['idMinijuego'] .'">
-                                        <div style="background-image: url(' . $juego['rutaImg'] . ')"></div>' .
+                                        <div style="background-image: url('. RUTA_IMG . $juego['img'] . ')"></div>' .
                                     '</a>';
                             }
                 echo    '</div>

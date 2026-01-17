@@ -1,8 +1,16 @@
 <?php
     function crearTarjetaJuego($juego) {
+        if ($juego['activo'] == 1){
+            $claseImg = 'article-img';
+            $a = 'href="index.php?c=Minijuego&m=pantallaCarga&id='. $juego['idMinijuego'] .'"';
+        } else{
+            $claseImg = 'article-img inactivo';
+            $a = 'class="btn-gris"';
+        }
+
         echo
             '<article>' .
-                '<div class="article-img" style="background-image: url(' . $juego['rutaImg'] . ');"></div>' .
+                '<div class="'. $claseImg .'" style="background-image: url(' . RUTA_IMG . $juego['img'] . ');"></div>' .
                 '<div class="data">' .
                     '<h3>' . $juego['nombre'] . '</h3>' .
                     '<small>Creado por: ' . $juego['creador'] . '</small>' .
@@ -10,7 +18,7 @@
                         $juego['descripcion'] .
                     '</p>' .
                 '</div>' .
-                '<a href="index.php?c=Minijuego&m=pantallaCarga&id='. $juego['idMinijuego'] .'">Jugar</a>' .
+                '<a '. $a .'>Jugar</a>' .
             '</article>';
     }
 ?>
