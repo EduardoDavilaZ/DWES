@@ -6,12 +6,16 @@
     define("DEF_METHOD","listarMinijuegos");
 
 
-    // Ruta para guardar las imágenes de los juegos
-    define('RUTA_IMG', '../uploads/minijuegos/');
+    // URL para mostrar imágenes
+    define('URL_IMG', 'https://02.daw.esvirgua.com/minijuegos/uploads/minijuegos/');
+
+    // Ruta para guardar imágenes en el servidor
+    define('RUTA_IMG',      __DIR__ . '/../../uploads/minijuegos/'); 
+
 
     // Ruta para guardar el fichero generado y usarlo para la descarga
-    define('RUTA_E_CSV', '../uploads/ficheros/exportarCSV/');
+    define('RUTA_E_CSV',    __DIR__ . '/../../uploads/ficheros/exportarCSV/'); 
 
     // Ruta para guardar los ficheros CSV con las filas que se han introducido en la bd
-    define('RUTA_I_CSV', '../uploads/ficheros/importarCSV/');
+    define('RUTA_I_CSV',    __DIR__ . '/../../uploads/ficheros/importarCSV/');
 ?>

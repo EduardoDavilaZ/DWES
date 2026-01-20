@@ -5,5 +5,5 @@
     define("DEF_CONTROLLER","Minijuego");
     define("DEF_METHOD","listarMinijuegos");
 
-    define('RUTA_IMG', '../uploads/minijuegos/');
+    define('URL_IMG', 'https://02.daw.esvirgua.com/minijuegos/uploads/minijuegos/');
 ?>

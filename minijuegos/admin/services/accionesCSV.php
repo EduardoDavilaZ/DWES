@@ -5,14 +5,20 @@
             $filas = [];
 
             if ($csv['error'] == UPLOAD_ERR_OK) {
-                $fichero = $csv['tmp_name'];
-                $f= fopen($fichero, 'r'); // Modo lectura
 
+                $nombreFichero = 'insert_' . date('Ymd_His') . '.csv';
+                $rutaDestino = RUTA_I_CSV . $nombreFichero;
+
+                if (!move_uploaded_file($csv['tmp_name'], $rutaDestino)) {
+                    return false;
+                }
+
+                $f = fopen($rutaDestino, 'r'); // Modo lectura
                 if (!$f) return false;
-                
+                        
                 $datos = fgetcsv($f, 1000, ',');
-
-                while (!feof($f)) {
+                
+                while ($datos != false) {
                     $filas[] = [
                         'idMinijuego'   => $datos[0],
                         'nombre'        => $datos[1],
@@ -25,7 +31,6 @@
                     $datos = fgetcsv($f, 1000, ',');
                 }
                 fclose($f);
-                
             }
             return $filas;
         }
@@ -61,6 +66,7 @@
                 readfile($fichero);
             } else {
                 echo "El archivo no existe.";
+                echo "Ruta especificada: " . $fichero;
             }
         }
     }

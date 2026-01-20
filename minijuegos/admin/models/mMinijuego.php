@@ -97,27 +97,35 @@
         public function insertarFilas($filas){
             $sql = 'INSERT INTO minijuegos (idMinijuego, nombre, creador, descripcion, fechaCreacion, img, activo) VALUES (:idMinijuego, :nombre, :creador, :descripcion, :fechaCreacion, :img, :activo)';
 
-            try{
+            try {
                 $this->conexion->beginTransaction();
                 $stmt = $this->conexion->prepare($sql);
 
                 foreach ($filas as $fila) {
-                    $stmt->execute([
-                        'idMinijuego'   => $fila['idMinijuego'],
-                        'nombre'        => $fila['nombre'],
-                        'creador'       => $fila['creador'],
-                        'descripcion'   => $fila['descripcion'],
-                        'fechaCreacion' => $fila['fechaCreacion'],
-                        'img'           => $fila['img'],
-                        'activo'        => $fila['activo']
-                    ]);
+
+                    $stmt->bindValue(':idMinijuego', $fila['idMinijuego'], PDO::PARAM_INT);
+                    $stmt->bindValue(':nombre', $fila['nombre'], PDO::PARAM_STR);
+                    $stmt->bindValue(':creador', $fila['creador'], $fila['creador'] === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+                    $stmt->bindValue(':descripcion', $fila['descripcion'], PDO::PARAM_STR);
+                    $stmt->bindValue(':fechaCreacion', $fila['fechaCreacion'], PDO::PARAM_STR);
+
+                    if ($fila['img'] == null) {
+                        $stmt->bindValue(':img', null, PDO::PARAM_NULL);
+                    } else {
+                        $stmt->bindValue(':img', $fila['img'], PDO::PARAM_STR);
+                    }
+
+                    $stmt->bindValue(':activo', $fila['activo'], PDO::PARAM_INT);
+
+                    $stmt->execute();
                 }
+
                 $this->conexion->commit();
-                return $stmt->rowCount() > 0 ? true : false;
-            } catch(PDOException $e){
+                return true;
+
+            } catch (PDOException $e) {
                 $this->conexion->rollBack();
-                $codigo = $e->errorInfo[1]; // Da el error mysql, no el de PDO
-                return $codigo;
+                return $e->errorInfo[1]; // Da el código de error mysql, no el de pdo
             }
         }
 

@@ -118,7 +118,7 @@
         }
 
         public function importarCSV(){
-            if (empty($_FILES['csv'])){
+            if (!isset($_FILES['csv'])) {
                 $this->mensaje = "Error al leer el CSV";
                 $this->vista = "vImportarCSV";
                 return ["mensaje" => $this->mensaje];
@@ -129,14 +129,16 @@
             $resultado = $this->objMinijuego->insertarFilas($filas);
 
             if (is_bool($resultado)){
-                    header('Location: index.php?c=Minijuego&m=listarMinijuegos');
+                header('Location: index.php?c=Minijuego&m=listarMinijuegos');
             } else {
                 if ($resultado == 1062){
                     $this->mensaje = 'Error de clave duplicada';
+                } else if ($resultado == 1406) {
+                    $this->mensaje = 'Los datos exceden el límite permitido';
                 } else {
                     $this->mensaje = 'Error desconocido';
                 }
-                
+                error_log("Error insertar CSV: " . $resultado);
                 $this->vista = "vImportarCSV";
                 return ["mensaje" => $this->mensaje];
             }

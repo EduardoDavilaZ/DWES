@@ -36,7 +36,7 @@
                                 '<td class="col-ocultar">' . $juego["descripcion"] . '</td>' .
                                 '<td class="col-ocultar-min del-img">' .
                                     '<a href="index.php?c=Minijuego&m=eliminarImg&id='. $id .'" onclick="return confirm(\'¿Está seguro de eliminar?\')">
-                                        <img class="mt-2" src="'. RUTA_IMG . $img . '" alt="' . $juego["nombre"] . '">
+                                        <img class="mt-2" src="'. URL_IMG . $img . '" alt="' . $juego["nombre"] . '">
                                     </a>
                                 </td>'.
                                 '<td>' . 

@@ -37,7 +37,7 @@
             $juego = $this->objMinijuego->obtenerJuego($this->idMinijuego);
             $this->vista = 'pantallaJugar';
 
-            if (is_array(value: $juego)){
+            if (is_array($juego)){
                 return ['juego' => $juego];
             } else {
                 $this->mensaje = "Algo falló, código de error: " . $juego;
@@ -58,8 +58,8 @@
             if (!in_array($juego, $juegos)){
                 array_push($juegos, $juego);
 
-                // Solo se guardarán los 5 últimos juegos jugados, los más antiguos se irán eliminando 
-                if (count($juegos) > 5){
+                // Solo se guardarán los 3* últimos juegos jugados, los más antiguos se irán eliminando 
+                if (count($juegos) > 3){
                     array_shift($juegos);
                 }
             }

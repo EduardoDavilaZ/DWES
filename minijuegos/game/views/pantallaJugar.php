@@ -13,7 +13,7 @@
                 Minijuegos
             </h1>
         </header>
-        <main id="loading-screen" style="background-image: url('<?php echo RUTA_IMG . $juego['img'] ?>');">
+        <main id="loading-screen" style="background-image: url('<?php echo URL_IMG . $juego['img'] ?>');">
             <div>
                 <h1><?php echo $juego['nombre'] ?></h1>
                 <p><?php echo $juego['descripcion'] ?></p>

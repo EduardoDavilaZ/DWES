@@ -8,12 +8,14 @@
             $a = 'class="btn-gris"';
         }
 
+        $creador = empty($juego['creador']) ? 'Creador anónimo' : 'Creado por: ' . $juego['creador'];
+
         echo
             '<article>' .
-                '<div class="'. $claseImg .'" style="background-image: url(' . RUTA_IMG . $juego['img'] . ');"></div>' .
+                '<div class="'. $claseImg .'" style="background-image: url(' . URL_IMG . $juego['img'] . ');"></div>' .
                 '<div class="data">' .
                     '<h3>' . $juego['nombre'] . '</h3>' .
-                    '<small>Creado por: ' . $juego['creador'] . '</small>' .
+                    '<small>' . $creador . '</small>' .
                     '<p>' .
                         $juego['descripcion'] .
                     '</p>' .

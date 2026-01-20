@@ -1,4 +1,5 @@
 <?php
+    
     require_once 'config/config.php';
 
     if(!isset($_GET['c'])) $_GET['c'] = DEF_CONTROLLER; // Controlador por defecto
