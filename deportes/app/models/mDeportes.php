@@ -34,10 +34,10 @@
         }
 
         public function deportesConTotalUsuarios(){
-            $sql = 'SELECT d.idDeporte AS id, d.nombreDep AS nombre, COUNT(ud.idUsuario) AS total
+            $sql = 'SELECT d.idDeporte AS id, d.nombreDep AS nombre, d.img AS img, COUNT(ud.idUsuario) AS total
                     FROM Usuarios_deportes ud
                     RIGHT JOIN Deportes d ON ud.idDeporte = d.idDeporte
-                    GROUP BY d.idDeporte, d.nombreDep;';
+                    GROUP BY d.idDeporte, d.nombreDep, d.img;';
 
             try{
                 $resultado = $this->conexion->query($sql);
@@ -52,7 +52,7 @@
 
             try{
                 $stmt = $this->conexion->prepare($sql);
-                $stmt->execute(['idDeporte' => $id]);
+                $stmt->execute(['id' => $id]);
                 return $stmt->rowCount() > 0 ? true : false;
             } catch(PDOException $e){
                 return $e->getCode();
@@ -99,7 +99,7 @@
 
             } catch (PDOException $e) {
                 $this->conexion->rollBack();
-                return $e->getCode();
+                return $e->errorInfo[1];
             }
         }
         public function modificar($idDeporte, $nombreDep, $img){
@@ -113,9 +113,20 @@
 
                 $stmt->execute();
 
-                return $stmt->rowCount() > 0 ? true : false;
-
+                return true;
             } catch (PDOException $e){
+                return $e->getCode();
+            }
+        }
+
+        public function eliminarImg($id){
+            $sql = 'UPDATE Deportes SET img = NULL WHERE idDeporte = :id;';
+
+            try{
+                $stmt = $this->conexion->prepare($sql);
+                $stmt->execute(['id' => $id]);
+                return $stmt->rowCount() > 0 ? true : false;
+            } catch(PDOException $e){
                 return $e->getCode();
             }
         }

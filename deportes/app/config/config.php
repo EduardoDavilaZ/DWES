@@ -2,8 +2,8 @@
     define("RUTA_VISTAS", "views/");
     define("RUTA_CONTROLADORES", "controllers/c");
 
-    define("DEF_CONTROLLER","Paginas");
-    define("DEF_METHOD","inicio");
+    define("DEF_CONTROLLER","Usuario");
+    define("DEF_METHOD","iniciarSesion");
 
     // URL para mostrar imágenes
     define('URL_IMG', 'http://localhost/servidor/deportes/app/assets/img_deportes/');

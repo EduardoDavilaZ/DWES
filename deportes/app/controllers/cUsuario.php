@@ -3,10 +3,18 @@
     class cUsuario{
         public $objUsuario;
         public $vista;
+        public $exito;
         public $mensaje;
         public function __construct(){
             $this->objUsuario = new MUsuario();
             $this->vista = '';
+            $this->mensaje = '';
+            $this->exito = false;
+        }
+
+        public function iniciarSesion(){
+            $this->vista = 'vInicioSesion';
+            return ['mensaje' => $this->mensaje, 'exito' => $this->exito];
         }
 
         public function inicioSesion(){
@@ -20,17 +28,21 @@
 
             $usuario = $this->objUsuario->obtenerUsuario($correo);
 
-            if ($password ==  $usuario['password']) { // Sin verificación PASSWORD_VERIFY()
+            if ($usuario && password_verify($password, $usuario['password']) && $usuario['perfil'] == 'c') {
                 $_SESSION['idUsuario'] = $usuario['idUsuario'];
                 $_SESSION['nombreUsuario'] = $usuario['nombreUsuario'];
-                header("Location: index.php?c=Inscripcion&m=usuariosConDeportes");
+                $this->exito = true;
+                header("Location: index.php?c=Deporte&m=usuariosConDeportes");
             }else {
-                header("Location: index.php");
-                exit;
+                $this->mensaje = 'Correo y contraseña incorrecta.';
+                $this->exito = false;
+                return $this->iniciarSesion();
             }
         }
 
-        public function cerrarSesion(){
+        public function cerrarSesion() {
+            session_start();
+            $_SESSION = [];
             session_destroy();
             header("Location: index.php");
             exit;

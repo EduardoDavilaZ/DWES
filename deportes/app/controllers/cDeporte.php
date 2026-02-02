@@ -9,24 +9,27 @@
         public $mensaje; 
         public $deportes;
         public $idDeporte;
+        public $exito;
 
         public function __construct(){
+            require_once __DIR__ . '/../config/auth.php';
             $this->vista = '';
             $this->mensaje = '';
+            $this->exito = false;
             $this->objDeportes = new mDeporte();
             $this->idDeporte = $_GET['id'] ?? null;
         }
 
         public function vAñadir(){
             $this->vista = "vAñadir";
-            return ['mensaje' => $this->mensaje];
+            return ['mensaje' => $this->mensaje, 'exito' => $this->exito];
         }
 
         public function vModificar(){
             $deporte = $this->objDeportes->obtenerDeporte($this->idDeporte);
             $this->vista = "vModificar";
             if (is_array($deporte)){
-                return ['deporte' => $deporte];
+                return ['deporte' => $deporte, 'mensaje' => $this->mensaje];
             } else {
                 $this->mensaje = "Algo falló, código de error: " . $deporte;
                 return ['mensaje' => $this->mensaje];
@@ -43,8 +46,9 @@
 
             if (!empty($_FILES['imagen']['name'])) {
                 $validado = Imagen::validar($_FILES['imagen']);
-                if (!$validado['resultado']) {
+                if ($validado['resultado'] === false) {
                     $this->mensaje = $validado['msg'];
+                    $this->exito = false;
                     return $this->vAñadir();
                 } else {
                     $existeImg = true;
@@ -55,10 +59,19 @@
 
             $resultado = $this->objDeportes->añadir($nombre, $existeImg);
 
-            if (is_array($resultado) && $existeImg) {
-                Imagen::guardar($_FILES['imagen'], $resultado['insertId']);
+            if (is_array($resultado)) {
+                $this->mensaje = 'Deporte añadido con éxito';
+                $this->exito = true;
+                if ($existeImg){
+                    Imagen::guardar($_FILES['imagen'], $resultado['insertId']);
+                }
             }else if (!is_array($resultado)) {
-                $this->mensaje = "Error al añadir el deporte. Código: $resultado";
+                switch ($resultado) {
+                    case 1062: $this->mensaje = 'Ya existe un deporte con el mismo nombre!'; break;
+                    case 1406: $this->mensaje = 'El campo excede el límite permitido'; break;
+                    default: $this->mensaje = 'Error en la base de datos'; break;
+                }
+                $this->exito = false;
             }
 
             return $this->vAñadir();
@@ -103,13 +116,44 @@
             }
         }
 
-
         public function eliminar(){
             $resultado = $this->objDeportes->eliminar($this->idDeporte);
-            if (!$resultado){
+            if (is_bool($resultado) && !$resultado){
                 $this->mensaje = "Error al eliminar";
             }
-            header('Location: index.php?c=Minijuego&m=listarMinijuegos');
+            
+            header('Location: index.php?c=Deporte&m=deportes');
+            exit;
+        }
+
+        public function eliminarImg(){
+            $resultado = $this->objDeportes->eliminarImg($this->idDeporte);
+
+            if ($resultado){
+                Imagen::eliminar($this->idDeporte);
+            } else {
+                $this->mensaje = 'Error al eliminar la imagen';
+            }
+            
+            header('Location: index.php?c=Inscripcion&m=deportes');
+        }
+
+        public function usuariosConDeportes(){
+            $listarUsuariosConDeportes  = $this->objDeportes->listarUsuariosConDeportes();
+            $deportesConUsuariosInscritos = $this->objDeportes->totalDeportesConUsuarios();
+            $this->vista = 'vDeportesUsuarios';
+            $usuariosDeportes = [];
+            foreach ($listarUsuariosConDeportes as $ud) {
+                $usuariosDeportes[$ud['nombreUsuario']][] = $ud['nombreDep'];
+            }
+            $this->exito = true;
+            return ['usuariosDeportes' => $usuariosDeportes, 'total' => $deportesConUsuariosInscritos['total']];
+        }
+
+        public function deportes(){
+            $deportesUsuarios  = $this->objDeportes->deportesConTotalUsuarios();
+            $this->vista = 'vDeportes';
+            return ['deportesUsuarios' => $deportesUsuarios];
         }
     }
 ?>

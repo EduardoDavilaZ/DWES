@@ -6,9 +6,7 @@
             $this->vista = 'vInicio';
         }
 
-        public function inicioSesion(){
-            $this->vista = 'vInicioSesion';
-        }
+        
 
         
     }

@@ -10,4 +10,4 @@ CREATE TABLE Deportes (
 -- con id: 1
 
 ALTER TABLE Deportes
-ADD COLUMN img VARCHAR(10) NULL;
+ADD COLUMN img VARCHAR(7) NULL;

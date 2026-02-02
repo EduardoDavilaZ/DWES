@@ -2,7 +2,7 @@
 <html lang="en">
 <?php 
     require_once 'partials/head.php';
-    encabezado('Inicio'); 
+    encabezado('Usuarios inscritos'); 
 ?>
 <body>
     <?php 

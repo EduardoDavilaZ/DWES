@@ -2,17 +2,11 @@
 <html lang="en">
 <?php 
     require_once 'partials/head.php';
-    encabezado('Modificar'); 
+    encabezado('Añadir'); 
 ?>
 <body>
     <?php 
         require_once 'partials/header.php';
-    ?>
-
-    <?php 
-        if (isset($mensaje)){
-            echo $mensaje;
-        }
     ?>
     
     <main class="container">
@@ -27,10 +21,24 @@
                 <label for="imagen" class="form-label mt-3">Imagen del deporte:</label>
                 <input type="file" name="imagen" id="imagen" class="form-control" accept="image/*">
 
-                <input type="submit" class="btn my-4 form-control color1" value="Añadir deporte">
+                <input type="submit" class="my-4 form-control bg-color-3 color-1" value="Añadir deporte">
             </fieldset>
 
         </form>
     </main>
+
+    <a href="index.php?c=Deporte&m=deportes" class="btn-volver py-2 px-4 fs-6">
+        <i class="bi bi-arrow-counterclockwise"></i> Volver
+    </a>
+
+    <?php
+        if (!empty($mensaje)){
+            if ($exito){
+                echo '<div class="msg exitoso p-2 fs-6">' . $mensaje . '</div>';
+            } else {
+                echo '<div class="msg fallido p-2 fs-6">' . $mensaje . '</div>';
+            }
+        }
+    ?>
 </body>
 </html>

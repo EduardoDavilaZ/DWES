@@ -8,10 +8,12 @@
         public $objDeportes;
         public $mensaje; 
         public $deportes;
+        public $exito;
 
         public function __construct(){
             $this->vista = '';
             $this->mensaje = '';
+            $this->exito = false;
             $this->objInscripcion = new mInscripcion();
             $this->deportes = $this->objInscripcion->obtenerDeportes();
             $this->objDeportes = new mDeporte();
@@ -19,7 +21,7 @@
 
         public function inscripcion(){
             $this->vista = 'vInscripcion';
-            return ['deportes' => $this->deportes, 'mensaje' => $this->mensaje];
+            return ['deportes' => $this->deportes, 'mensaje' => $this->mensaje, 'exito' => $this->exito];
         }
         public function guardarInscripcion() {
             if (empty($_POST['nombre'])) {
@@ -38,7 +40,8 @@
                 $this->mensaje = 'Falta la contraseña';
                 return $this->inscripcion();
             }
-            $password = $_POST['password'];
+            $passwordPlano = $_POST['password'];
+            $passwordHash = password_hash($passwordPlano, PASSWORD_BCRYPT);
 
             if (empty($_POST['correo'])) {
                 $this->mensaje = 'Falta el correo';
@@ -59,36 +62,21 @@
             }
             $deporte = $_POST['deporte'];
 
-            $resultado = $this->objInscripcion->añadir($nombre, $apeNombre, $password, $correo, $telefono, $deporte);
+            $resultado = $this->objInscripcion->añadir($nombre, $apeNombre, $passwordHash, $correo, $telefono, $deporte);
 
             if ($resultado === true) {
                 $this->mensaje = 'Usuario añadido correctamente';
+                $this->exito = true;
             } else {
                 switch ($resultado) {
-                    case 1062: $this->mensaje = 'Error de clave duplicada, prueba otro usuario'; break;
+                    case 1062: $this->mensaje = 'Error de clave duplicada, prueba con otro usuario'; break;
                     case 1406: $this->mensaje = 'Algún dato excede el tamaño permitido'; break;
                     default: $this->mensaje = 'Error en la base de datos'; break;
                 }
+                $this->exito = false;
             }
             return $this->inscripcion();
         }
-
-        public function usuariosConDeportes(){
-            $listarUsuariosConDeportes  = $this->objDeportes->listarUsuariosConDeportes();
-            $deportesConUsuariosInscritos = $this->objDeportes->totalDeportesConUsuarios();
-            
-            $this->vista = 'vDeportesUsuarios';
-            $usuariosDeportes = [];
-            foreach ($listarUsuariosConDeportes as $ud) {
-                $usuariosDeportes[$ud['nombreUsuario']][] = $ud['nombreDep'];
-            }
-            return ['usuariosDeportes' => $usuariosDeportes, 'total' => $deportesConUsuariosInscritos['total']];
-        }
-
-        public function deportes(){
-            $deportesUsuarios  = $this->objDeportes->deportesConTotalUsuarios();
-            $this->vista = 'vDeportes';
-            return ['deportesUsuarios' => $deportesUsuarios];
-        }
+        
     }
 ?>   

@@ -1,4 +1,3 @@
-
 :root{
     --color1: #fff;
     --color2: #e0a800;
@@ -11,8 +10,6 @@
     color: var(--color1) !important;
     text-decoration: none;
 }
-
-
 
 .bg-color-1{background-color: var(--color1) !important;}
 .bg-color-2{background-color: var(--color2) !important;}
@@ -27,8 +24,6 @@
 .color-2{color: var(--color2) !important;}
 .color-3{color: var(--color3) !important;}
 .color-4{color: var(--color4) !important;}
-
-
 
 .b-shadow{
     border-radius: 1rem;
@@ -77,7 +72,71 @@ nav{
     }
 }
 
-.img-dep{
-    width: 10%;
+.img-dep {
+    width: 20%;
     max-width: 50px;
+}
+
+.exitoso {
+    background-color: rgb(21, 91, 21);
+}
+
+.fallido {
+    background-color: rgb(126, 29, 29);
+}
+
+.msg{
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    color: var(--color1);
+    border-radius: 1rem;
+}
+
+.btn-volver{
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    color: var(--color1);
+    border-radius: 1rem;
+    background-color: var(--color2);
+    text-decoration: none;
+}
+
+.del-img{
+    position: relative;
+    overflow: hidden;
+
+    &:hover{
+        &::after{
+            content: "\F659"; 
+            font-family: "bootstrap-icons";
+            pointer-events: none;
+            position: absolute;
+            left: 50%;
+            top: 55%;
+            translate: -50% -50%;
+            padding: .1rem;
+            width: 1.75rem;
+            height: 1.75rem;
+            border-radius: 1rem;
+            background-color: rgb(130, 130, 130);
+            color: white !important;
+        }
+        img{
+            opacity: 0.5;
+        }
+    }
+}
+
+@media (max-width: 540px) {
+    .col-ocultar {
+        display: none !important;
+    }
+}
+
+@media (max-width: 380px) {
+    .col-ocultar-min {
+        display: none !important;
+    }
 }
