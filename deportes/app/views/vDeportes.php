@@ -10,6 +10,10 @@
     ?>
     
     <main class="container">
+        <div class="my-4">
+            <a class="bg-color-3 color-1 rounded p-2" href="index.php?c=Deporte&m=vAñadir"><i class="bi bi-plus-square"></i> Añadir</a>
+        </div>
+
         <?php
             if ($deportesUsuarios){
                 echo  '<table class="table mt-2">' . 
@@ -29,9 +33,12 @@
                             '<td>' . $du['total'] . '</td>' .
                             
                             '<td>' . 
-                                '<a href="index.php?c=Minijuego&m=vModificar&id='. $du['id'] .'"><i class="bi bi-pencil-square"></i></a>' . '</td>' .
+                                '<a class="color-3" href="index.php?c=Deporte&m=vModificar&id='. $du['id'] .'">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>' . 
+                                '</td>' .
                             '<td>' . 
-                                '<a href="index.php?c=Minijuego&m=eliminar&id='. $du['id'] .'" onclick="return confirm(\'¿Está seguro de eliminar?\')">
+                                '<a class="color-3" href="index.php?c=Deporte&m=eliminar&id='. $du['id'] .'" onclick="return confirm(\'¿Está seguro de eliminar?\')">
                                     <i class="bi bi-trash"></i>
                                 </a>' .
                             '</td>'.

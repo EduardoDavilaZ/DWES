@@ -14,7 +14,7 @@
                 $correo = $_POST['correo'];
                 $password = $_POST['password'];
             } else {
-                header("Location: ./index.php");
+                header("Location: index.php");
                 exit;
             }
 
@@ -23,11 +23,17 @@
             if ($password ==  $usuario['password']) { // Sin verificación PASSWORD_VERIFY()
                 $_SESSION['idUsuario'] = $usuario['idUsuario'];
                 $_SESSION['nombreUsuario'] = $usuario['nombreUsuario'];
-                header("Location: ./index.php?c=Inscripcion&m=usuariosConDeportes");
+                header("Location: index.php?c=Inscripcion&m=usuariosConDeportes");
             }else {
-                header("Location: ./index.php");
+                header("Location: index.php");
                 exit;
             }
+        }
+
+        public function cerrarSesion(){
+            session_destroy();
+            header("Location: index.php");
+            exit;
         }
     }
 ?>

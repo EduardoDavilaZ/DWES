@@ -19,7 +19,16 @@
 .bg-color-3{background-color: var(--color3) !important;}
 .bg-color-4{ background-color: var(--color4) !important;}
 
-.color-1{color: var(--color1) !important}
+.color-1{
+    color: var(--color1) !important;
+    text-decoration: none !important;
+}
+
+.color-2{color: var(--color2) !important;}
+.color-3{color: var(--color3) !important;}
+.color-4{color: var(--color4) !important;}
+
+
 
 .b-shadow{
     border-radius: 1rem;
@@ -31,6 +40,9 @@ nav{
     background-color:rgb(255, 251, 240);
     padding: 1rem 0rem;
     border-bottom: 1px solid var(--color3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     ul{
         list-style: none;
@@ -40,7 +52,7 @@ nav{
         gap: 1rem;
         flex-wrap: wrap;
         li{
-            flex-grow: 1;
+            flex-grow: 0;
             text-align: center;
             margin: 0;
             padding: .5rem 1rem;
@@ -52,4 +64,20 @@ nav{
             }
         }
     }
+
+    div{
+        margin: 0rem 1rem;
+        padding: .5rem 1rem;
+        background-color: var(--color3);
+        border-radius: 1rem;
+        a{
+            text-decoration: none;
+            color: white;
+        }
+    }
+}
+
+.img-dep{
+    width: 10%;
+    max-width: 50px;
 }

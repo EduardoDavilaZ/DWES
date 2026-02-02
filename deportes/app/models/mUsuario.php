@@ -7,7 +7,7 @@
         }
 
         public function obtenerUsuario ($correo){
-            $sql = 'SELECT * FROM usuarios WHERE correo = :correo';
+            $sql = 'SELECT * FROM Usuarios WHERE correo = :correo';
 
             try{
                 $sth = $this->conexion->prepare($sql);
@@ -15,7 +15,7 @@
                 $usuario = $sth->fetch(PDO::FETCH_ASSOC);
                 return $usuario;
             } catch(PDOException $e){
-                return ['resultado' => false, 'error' => $e->getCode()];
+                return ['resultado' => false, 'error' => $e->errorInfo[1]];
             }
         }
     }

@@ -9,13 +9,13 @@
         }
 
         public function obtenerDeportes(){
-            $sql = 'SELECT * FROM deportes;';
+            $sql = 'SELECT * FROM Deportes;';
 
             try{
                 $deportes = $this->conexion->query($sql);
                 return $deportes->fetchAll(PDO::FETCH_ASSOC);
             } catch(PDOException $e){
-                return $e->getCode();
+                return $e->errorInfo[1];
             }
         }
 
@@ -39,10 +39,9 @@
 
                 $this->conexion->commit();
                 return true;
-
             } catch (PDOException $e) {
                 $this->conexion->rollBack();
-                return $e->getCode();
+                return $e->errorInfo[1];
             }
         }
     }

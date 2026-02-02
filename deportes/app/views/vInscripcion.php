@@ -39,13 +39,14 @@
                         '<li class="list-group-item">
                             <input type="checkbox" name="deporte[]" value="' . $d['idDeporte'] . '" class="form-check-input">
                             <label class="form-check-label">'. $d['nombreDep'] .'</label>
+                            <img class=" img-dep" src="'. URL_IMG . $d['img'] . '" alt="' . $d['img'] . '">
                         </li>';
                     }
                 ?>
             </ul>
         </fieldset>
 
-        <label for="condiciones" class="form-check-label">Acepto las condiciones</label>
+        <label for="condiciones" class="form-check-label">Acepto las condiciones: </label>
         <input type="checkbox" name="condiciones" id="condiciones" class="form-check-input">
 
         <input type="submit" class="form-control my-4" value="Enviar">
